@@ -1,0 +1,247 @@
+---
+title: "MA615 Final Project"
+author: "Keyu Feng"
+format: pdf
+editor: visual
+---
+
+```{r}
+#| echo: false 
+library(WDI) 
+library(ggplot2) 
+library(knitr) 
+library(dplyr) 
+library(patchwork)
+```
+
+## General Information
+
+Macao (Macau), officially known as the Macao Special Administrative Region (SAR) of the People's Republic of China, is a small yet dynamic territory located on the southern coast of China. It covers just 32.9 square kilometers, it is one of the most densely populated regions in the world, with a population of approximately 684,000. Known as the "Las Vegas of Asia," Macao is globally renowned for its vibrant tourism and gaming industries, which contribute significantly to its economy. The cityscape is a unique blend of Chinese and Portuguese influences, reflecting its history as a former Portuguese colony until its handover to China in 1999. Under the "One Country, Two Systems" framework, Macao enjoys a high degree of autonomy, retaining its own legal and economic systems. Today, Macao is a thriving cultural and economic hub, offering a mix of historic landmarks, luxurious casinos, and a rich multicultural heritage.
+
+In this report, I will briefly introduce Macao with history, government, economy and people. Then I will do some comparation with Hong Kong, I will also create a mini program to predict population in the future, the I will work on its strengths, weakness, opportunities and threats. Most information can be found on my Shiny App.
+
+```{r, echo=FALSE, fig.show="hold", out.width="45%", fig.align="center"}
+include_graphics(c("www/macau-location-map.jpg"))
+```
+
+## History
+
+Macao used to be a former Portuguese colony. It was established as a Portuguese settlement in 1557, it was the first and last European colony in China, and it acted as a bridge between the East and West for centuries. Portuguese merchants used Macao as a hub for trade between China, Japan, and Europe, fostering a cultural and economic exchange that left an indelible mark on the city’s architecture, language, and traditions.
+
+In 1999, Macao was handed back to China, marking the end of over 400 years of Portuguese administration. Under the One Country, Two Systems framework, Macao retained its legal and economic systems, autonomy in domestic affairs, and freedom of religion and expression. This unique governance structure allows Macao to thrive as a multicultural hub, blending Chinese and Portuguese influences, evident in its UNESCO World Heritage sites such as the Ruins of St. Paul’s and A-Ma Temple. Today, Macao stands as a global tourist and cultural destination, preserving its historical legacy while embracing modern development.
+
+```{r, echo=FALSE, fig.show="hold", out.width="45%", fig.align="center"}
+include_graphics(c("www/Flag.png", "www/Emblem.png"))
+```
+
+# Government
+
+Macao operates as a Special Administrative Region (SAR) of the People's Republic of China. This unique arrangement grants Macao a high degree of autonomy, except in matters of defense and foreign affairs, which are managed by the central Chinese government. However, Macao has its own legal and judicial system, which is based on Portuguese civil law, and retains control over its economy, taxation, immigration policies, and public security. The government is headed by the Chief Executive, who is selected by an election committee and formally appointed by the central government in Beijing.
+
+The Macao Legislative Assembly serves as the region’s law-making body, with members elected through a combination of direct elections, indirect elections, and appointments. The government structure also includes five principal administrative departments, each responsible for areas such as finance, education, and healthcare. Macao’s governance system prioritizes stability and economic growth, aligning its policies with its strategic role as a global tourism and gaming hub while embracing efforts to diversify into finance and technology sectors.
+
+# Economy
+
+Macao is consistently ranked among the wealthiest regions globally, boasting one of the highest GDP per capita levels. According to the International Monetary Fund, in 2021, its GDP per capita exceeded \$40,000, which placed it in the top 10 globally for this metric. Known as the "Las Vegas of Asia," Macao's gaming revenue not only surpasses that of Las Vegas but also positions it as the largest gaming market in the world. This has earned Macao the number one spot in gaming revenue worldwide, with billions of dollars in annual earnings. Its world-class casinos, luxury resorts, and vibrant entertainment facilities make it a leading destination for international and domestic tourists, placing it in the top 20 globally for visitor numbers.
+
+In terms of tourism competitiveness, Macao ranks highly within Asia for its infrastructure and cultural offerings, as recognized by the World Travel and Tourism Council. It is also one of the top 10 cities globally for tourism revenue. While the economy is heavily reliant on gaming, the government is working to diversify its economic base. Macao ranks highly in global economic freedom indexes and is noted for its tax-friendly policies and open market system. Nowadays, Macao vigorously promotes financial services, cultural tourism, and traditional Chinese medicine to reduce dependency on gaming, thus ensuring a more sustainable economic future.
+
+From the figures, Macao's GDP and GDP per capita follows the similar trend in 2000-2023. There is an increasing trend from 2000 in economy, but in approximately 2014, there is a significant decrease. In 2019, probably due to covid-19 pandemic, there is a more significant decrease in economy, while it recovered gradually in about 2021.
+
+The graph Macao's Gross Gaming Revenue (2013-2023) shows Macao's Gross Gaming Revenue (GGR) trends from 2013 to 2023, we can find that the amount of revenue is amazing. The industry reached its peak in 2013 with approximately MOP 360 billion, reflecting its dominance as the world's largest gaming market. However, a sharp decline followed between 2014 and 2016, driven by China's anti-corruption measures and reduced VIP gaming activity, with revenues bottoming out at MOP 223 billion in 2016. A recovery phase occurred from 2017 to 2019, stabilizing at around MOP 292 billion before the COVID-19 pandemic caused a dramatic drop to MOP 60 billion in 2020, the lowest point of the decade. While 2021 showed modest improvement, revenues dropped further in 2022 to MOP 42 billion due to continued global challenges. By 2023, the industry rebounded sharply to MOP 184 billion, signaling recovery as travel restrictions eased and economic conditions improved. This pattern highlights the industry's resilience and vulnerability to external factors.
+
+```{r, results='hide'}
+#| echo: false
+# Retrieve GDP and GDP per capita data for Macao from 2000 to 2023
+economy_data <- WDI(country = "MAC", 
+                    indicator = c("NY.GDP.MKTP.CD", "NY.GDP.PCAP.CD"), 
+                    start = 2000, end = 2023)
+
+# View the data
+print(economy_data)
+
+# Save the data to a CSV file (optional)
+#write.csv(economy_data, "macau_economy_data.csv", row.names = FALSE)
+
+# Plot the data using ggplot2
+library(ggplot2)
+
+# GDP plot
+ggplot(economy_data, aes(x = year, y = NY.GDP.MKTP.CD)) +
+  geom_line(color = "blue", linewidth = 1) +
+  labs(title = "Macao GDP (2000-2023)", x = "Year", y = "GDP (current US$)") +
+  theme_minimal()
+
+# GDP per capita plot
+ggplot(economy_data, aes(x = year, y = NY.GDP.PCAP.CD)) +
+  geom_line(color = "skyblue", linewidth = 1) +
+  labs(title = "Macao GDP Per Capita (2000-2023)", x = "Year", y = "GDP Per Capita (current US$)") +
+  theme_minimal()
+
+# Gross Revenue for gambling plot
+ggr_data <- data.frame(
+  Year = 2013:2023,
+  GGR = c(360.75, 351.52, 230.84, 223.21, 265.74, 302.85, 292.46, 60.44, 86.86, 42.20, 183.70)
+)
+
+# Plot the data
+ggplot(ggr_data, aes(x = Year, y = GGR)) +
+  geom_line(color = "blue", linewidth = 1) +
+  geom_point(color = "red", linewidth = 2) +
+  labs(
+    title = "Macao's Gross Gaming Revenue (2013-2023)",
+    x = "Year",
+    y = "Gross Gaming Revenue (MOP billion)"
+  ) +
+  theme_minimal()
+
+```
+
+# People
+
+Macao is one of the most densely populated regions in the world with a population of approximately 684,000. 92% of the residents are Chinese, and the remaining population includes Portuguese, mixed Chinese and Portuguese descent (Macanese), and other smaller ethnic communities.
+
+Macao is a bilingual region, its official languages are Cantonese and Portuguese. Cantonese is the most widely spoken language, while Portuguese remains prominent in legal, governmental, and ceremonial contexts. English is also widely used in business and tourism.
+
+Education in Macao is highly regarded, with literacy rates exceeding 96%. The education system incorporates both Chinese and Portuguese curricula, and higher education institutions, such as the University of Macau, attract students from around the world. Despite its small size, Macao has a vibrant cultural scene, with festivals like the Dragon Boat Festival, Mid-Autumn Festival, and Lusofonia Festival celebrating both Chinese and Portuguese traditions.
+
+The "Race Proportion in Macao" shows the proportion of races, from the data in Wikipedia, there were 92.4% Chinese, 2.7% Filipino and 4.9% other nationalities in 2021. "The Population for Macao" shows an increasing rate in populations from 2000 to 2021. In 2021, there were approximately 686,607 people. "Population Projection for Macao (2000-2041) shows an overall prediction for population, in 2041, the population will be approximately 900,000 without accounting for other effects such as policies.
+
+```{r, echo=FALSE, results='hide'}
+#|echo: false
+# Retrieve historical population data for Macao
+population_data <- WDI(country = "MAC", indicator = "SP.POP.TOTL", start = 2000, end = 2021)
+
+# Create the race dataframe based on the information from wikipedia
+race_data <- data.frame(
+  Race = c("Ethnic Chinese", "Filipino", "Other Nationalities"),
+  Proportion = c(92.4, 2.7, 4.9) 
+)
+
+# Calculate percentage labels
+race_data <- race_data %>%
+  mutate(Percentage = paste0(Proportion, "%"))
+
+# Plot the race in 2021
+plot1 <- ggplot(race_data, aes(x = Race, y = Proportion, fill = Race)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  labs(
+    title = "Race Proportion in Macao (2023)",
+    x = "Race",
+    y = "Proportion (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Plot the population from 2000 to 2021
+plot2 <- ggplot(population_data, aes(x = year, y = SP.POP.TOTL)) +
+      geom_line(color = "skyblue", linewidth = 1.2) +
+      geom_point(data = population_data, aes(x = year, y = SP.POP.TOTL), color = "black", size = 2) +
+      labs(title = "Population for Macao (2000-2021)",
+           x = "Year", y = "Population") +
+      theme_minimal()
+
+plot12 <- (plot1 | plot2)
+plot12
+
+# Build a simple linear model for population projection
+population_model <- lm(SP.POP.TOTL ~ year, data = population_data)
+
+# Generate future years for projection
+future_years <- data.frame(year = 2022:2041)
+future_years$SP.POP.TOTL <- predict(population_model, newdata = future_years)
+
+# Combine historical and projected data
+projected_data <- rbind(population_data[, c("year", "SP.POP.TOTL")], future_years)
+
+# 20 Years population plot
+ggplot(projected_data, aes(x = year, y = SP.POP.TOTL)) +
+      geom_line(color = "blue", linewidth = 1.2) +
+      geom_point(data = population_data, aes(x = year, y = SP.POP.TOTL), color = "white", size = 2) +
+      labs(title = "Population Projection for Macao (2000-2041)",
+           x = "Year", y = "Population") +
+      theme_minimal()
+
+```
+
+# Comparison to Hong Kong
+
+Hong Kong, officially known as the Hong Kong Special Administrative Region (HKSAR) of the People's Republic of China, is a bustling metropolitan city located on the southeastern coast of China. With a population of over 7.5 million people and a land area of just 1,106 square kilometers, Hong Kong is one of the most densely populated regions in the world. Hong Kong is a unique blend of East and West, shaped by its history as a former British colony until 1997. Under the "One Country, Two Systems" framework, Hong Kong maintains a high degree of autonomy, with its own legal, economic, and political systems distinct from Mainland China. To make comparison with Macao, Hong Kong is the best place since they are close to each other, and they follow the similar framework. In this report, I compared the GDP and Population to see their differences.
+
+The GDP comparison graph illustrates the economic growth trends of Macao and Hong Kong from 2000 to 2021. Hong Kong exhibits a consistent and substantial increase in GDP, starting at approximately \$150 billion in 2000 and exceeding \$350 billion by 2021. This steady growth underscores Hong Kong's position as a global financial hub with a diversified economy.
+
+In contrast, Macao's GDP shows a more volatile trajectory. While experiencing rapid growth after 2000, driven by its thriving gaming and tourism industries, Macao's GDP growth levels off in recent years. The contrast between Hong Kong’s steady rise and Macao’s fluctuations highlights the differing economic structures and dependencies of the two regions.
+
+The population comparison graph reveals a clear disparity in population trends between Macao and Hong Kong over the same period. Hong Kong's population grows consistently, starting at around 6.5 million in 2000 and reaching approximately 7.5 million by 2021.
+
+However, Macao’s population remains significantly smaller, starting at just under 500,000 in 2000 and growing modestly to approximately 680,000 by 2021. This slower growth is reflective of Macao's limited geographical size and carrying capacity, which constrains its ability to accommodate larger populations.
+
+```{r}
+#| echo: false
+# Retrieve data for Macao and Hong Kong
+two_data <- WDI(country = c("MAC", "HKG"),
+                       indicator = c("NY.GDP.MKTP.CD", "SP.POP.TOTL"),
+                       start = 2000, end = 2021)
+
+# Inspect the data
+head(two_data)
+
+# Plot the data
+# Plot GDP trends
+ggplot(two_data, aes(x = year, y = NY.GDP.MKTP.CD, color = country)) +
+  geom_line(linewidth = 1.2) +
+  labs(title = "GDP Comparison: Macao vs Hong Kong (2000-2021)",
+       x = "Year", y = "GDP (Current US$)") +
+   scale_y_continuous(breaks = seq(0, max(two_data$NY.GDP.MKTP.CD, na.rm = TRUE), by = 5e10)) +
+  theme_minimal()
+
+# Plot Population trends
+ggplot(two_data, aes(x = year, y = SP.POP.TOTL, color = country)) +
+  geom_line(linewidth = 1.2) +
+  labs(title = "Population Comparison: Macao vs Hong Kong (2000-2021)",
+       x = "Year", y = "Population") +
+  scale_y_continuous(breaks = seq(0, max(two_data$SP.POP.TOTL, na.rm = TRUE), by = 1e6)) +
+  theme_minimal()
+```
+
+# Strengths, Weaknesses, Opportunities, and Threats Analysis
+
+## Strengths
+
+-   Macao is a global leader in gaming revenue, making it the largest gaming market in the world.
+-   Macao has high GDP per capita, consistently ranked among the top 10 globally.
+-   Macao has unique cultural blend of Portuguese and Chinese influences.
+
+## Weaknesses
+
+-   Macao has heavy reliance on gaming and tourism industries, leading to economic vulnerability.
+-   Macao has limited land area, causing constraints in expansion and infrastructure.
+-   Small population and workforce limit local talent pool.
+
+## Opportunities
+
+-   Diversification into financial services, technology, and cultural tourism.
+
+-   Macao has enhanced regional cooperation with Mainland China, especially through the Greater Bay Area initiative.
+
+-   Growth in education and healthcare sectors to attract global talent.
+
+## Threats
+
+-   Economic downturns or global recessions can significantly impact tourism and gaming.
+-   Rising competition from other gaming and entertainment hubs.
+-   Environmental concerns such as land reclamation and climate change impacts.
+
+# Solutions
+
+To address its challenges and leverage its opportunities, Macao must pursue strategic solutions that ensure sustainable development and economic diversification. Reducing its reliance on gaming and tourism industries is critical; this can be achieved by fostering growth in financial services, technology, and cultural tourism, which would create a more resilient economy. Strengthening regional cooperation through the Greater Bay Area initiative can enhance trade, infrastructure, and innovation partnerships with Mainland China. Investing in education and healthcare will not only attract global talent but also build a stronger local workforce to mitigate constraints caused by its small population. To overcome land and infrastructure limitations, Macao can adopt sustainable urban planning strategies, including vertical expansion and smart city technologies. Additionally, proactive environmental measures, such as eco-friendly land reclamation and climate change adaptation programs, are essential to safeguard its future.
+
+# Reference
+
+<https://en.wikipedia.org/wiki/Macau>
+
+<https://www.britannica.com/place/Macau-administrative-region-China>
+
+<https://data.worldbank.org/country/macao-sar-china>
+
+<https://www.dicj.gov.mo/web/en/information/DadosEstat/2023/content.html#n1>
