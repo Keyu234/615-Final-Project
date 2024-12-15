@@ -21,17 +21,9 @@ editor: visual
 
 ------------------------------------------------------------------------
 
-# Macao: A Small Island Developing State
+# The Location of Macao
 
--   **Economy**:
-
-    -   Known as the "Las Vegas of Asia."
-
-    -   Globally recognized for its tourism and gaming industries.
-
-    -   Gaming and tourism significantly contribute to its economy.
-
-------------------------------------------------------------------------
+---
 
 # Macao: A Small Island Developing State
 
@@ -67,8 +59,6 @@ editor: visual
 
     -   Macao blends Chinese and Portuguese cultures, creating a unique multicultural identity.
 
-    \![Flag\](Flag.png){ width=50% }
-
 ------------------------------------------------------------------------
 
 # History
@@ -103,7 +93,7 @@ editor: visual
 
         -   Indirect elections.
 
----
+------------------------------------------------------------------------
 
 # Economy
 
@@ -125,6 +115,10 @@ editor: visual
 
     -   Among the top 10 cities globally for tourism revenue.
 
+------------------------------------------------------------------------
+
+# Graphs
+
 ---
 
 # People
@@ -145,7 +139,7 @@ editor: visual
 
     -   Chinese and Portuguese curricula with highly regarded education system.
 
----
+------------------------------------------------------------------------
 
 # Comparison
 
@@ -153,7 +147,7 @@ editor: visual
 
 -   Overall lower population than Hong Kong.
 
----
+------------------------------------------------------------------------
 
 # SWOT Analysis Part 1
 
@@ -173,7 +167,7 @@ editor: visual
 
 -   Population and workplace limit.
 
----
+------------------------------------------------------------------------
 
 # SWOT Analysis Part 2
 
@@ -193,7 +187,7 @@ editor: visual
 
 -   Environmental concerns like land reclamation and climate change impacts.
 
----
+------------------------------------------------------------------------
 
 # 
 
