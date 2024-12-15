@@ -23,7 +23,7 @@ editor: visual
 
 # The Location of Macao
 
----
+------------------------------------------------------------------------
 
 # History
 
@@ -99,7 +99,7 @@ editor: visual
 
 # Graphs
 
----
+------------------------------------------------------------------------
 
 # People
 
@@ -168,8 +168,6 @@ editor: visual
 -   Environmental concerns like land reclamation and climate change impacts.
 
 ------------------------------------------------------------------------
-
-# 
 
 # 
 
